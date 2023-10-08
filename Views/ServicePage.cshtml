@@ -1,0 +1,116 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.ServicePage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	Layout = "_BreadcrumbPageLayout.cshtml";
+	
+	var services = Umbraco.Content(Guid.Parse("82221352-3c59-4fcd-b73d-ad1bfdc6a83d"))
+        .ChildrenOfType("serviceItemPage")
+        .Where(x => x.IsVisible())
+        .OrderByDescending(x => x.CreateDate);
+}
+
+<section class="all-services">
+    <div class="container">
+        <div class="section-headers">
+            <p class="allert section-header">@Model.Value("allServicesSectionHeader")</p>
+            <h1 class="section-title">@Model.Value("allServicesSectionTitle")</h1>
+        </div>
+        <div class="items-header">
+            <p class="section-header allert">Features</p>
+        </div>
+        <div class="services-container">
+            <div>
+                <button id="features-prev-btn" class="btn pagination-btn"><i class="fa-solid fa-chevron-left"></i></button>
+            </div>
+            <div class="items-container">
+                <div class="items-wrapper features-wrapper">
+                    <div class="items-slider">
+	                @foreach (var item in services)
+	                {
+                        var url = item.Url();
+                        var date = item.CreateDate;
+                        var image = item.Value<IPublishedContent>("serviceImage");
+                        var category = item.Value("serviceCategory");
+                        var title = item.Name();
+                        var preamble = item.Value("servicePreamble");
+                        var featureServices = "Feature";
+                        
+                        @if (category != null && category.Equals(featureServices)) 
+                        {
+                            <div class="item-card">
+                                <a href="@url" class="card-link">
+                                    <div class="card-image">
+                                        <img src="@image?.Url()" alt="service image">
+                                        <div class="box">
+                                            <h4 class="date">@date.ToString("dd")</h4>
+                                            <p class="month">@date.ToString("MMM")</p>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="card-content">
+                                    <p class="category">@category</p>
+                                    <h4 class="title">@title</h4>
+                                    <p class="description">@preamble</p>
+                                </div>
+                            </div>
+                        }
+	                }
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button id="features-next-btn" class="btn pagination-btn"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+        <div class="items-header">
+            <p class="section-header allert">Projects</p>
+        </div>
+        <div class="services-container ">
+            <div>
+                <button id="projects-prev-btn" class="btn pagination-btn"><i class="fa-solid fa-chevron-left"></i></button>
+            </div>
+            <div class="items-container">
+                <div class="items-wrapper projects-wrapper">
+                    <div class="items-slider">
+	                @foreach (var item in services)
+	                {
+                        var url = item.Url();
+                        var date = item.CreateDate;
+                        var image = item.Value<IPublishedContent>("serviceImage");
+                        var category = item.Value("serviceCategory");
+                        var title = item.Name();
+                        var preamble = item.Value("servicePreamble");
+                        var projectServices = "Project";
+                            
+                        @if (category != null && category.Equals(projectServices)) 
+                        {
+                            <div class="item-card">
+                                <a href="@url" class="card-link">
+                                    <div class="card-image">
+                                        <img src="@image?.Url()" alt="service image">
+                                        <div class="box">
+                                            <h4 class="date">@date.ToString("dd")</h4>
+                                            <p class="month">@date.ToString("MMM")</p>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="card-content">
+                                    <p class="category">@category</p>
+                                    <h4 class="title">@title</h4>
+                                    <p class="description">@preamble</p>
+                                </div>
+                            </div>
+                        }
+	                }
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button id="projects-next-btn" class="btn pagination-btn"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+@await Html.PartialAsync("_Subscribe")

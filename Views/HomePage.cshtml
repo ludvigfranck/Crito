@@ -1,0 +1,291 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.HomePage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.Models
+@{
+	Layout = "_ShowcasePageLayout.cshtml";
+	
+	var services = Umbraco.Content(Guid.Parse("82221352-3c59-4fcd-b73d-ad1bfdc6a83d"))!
+        .ChildrenOfType("serviceItemPage")!
+        .Where(x => x.IsVisible())
+        .OrderByDescending(x => x.CreateDate);
+        
+    var featureCategory = "Feature";
+    var projectCategory = "Project";
+    
+	var employees = Umbraco.Content(Guid.Parse("8ba9af53-2c6e-4ccf-89d6-3a2e35aed155"))
+        .ChildrenOfType("employeeItemPage")
+        .Where(x => x.IsVisible())
+        .OrderByDescending(x => x.CreateDate);
+        
+	var reviews = Umbraco.Content(Guid.Parse("c4c93124-5381-449d-b23d-a2e190b0b549"))
+        .ChildrenOfType("reviewItem")
+        .Where(x => x.IsVisible())
+        .OrderByDescending(x => x.CreateDate);
+}
+
+<section class="brands">
+    <div class="container">
+    @{
+        var brandImages = Model.Value<IEnumerable<MediaWithCrops>>("BrandImages");
+        foreach (var entry in brandImages!)
+        {
+            <img src="@entry.MediaUrl()" alt="brand image" />
+        }
+    }
+    </div>
+</section>
+
+<section class="about">
+    <div class="container">
+        <div class="image-column">
+        @{
+            var aboutCompanyImage = Model.Value<MediaWithCrops>("AboutCompanyImage");
+            if (aboutCompanyImage != null)
+            {
+                <img src="@aboutCompanyImage.MediaUrl()" alt="image" />
+            }
+        }
+            <div class="blue-card">
+                <h2 class="name">@Model.Value("aboutCompanyName"), <span class="allert">@Model.Value("aboutCompanyRole")</span></h2>
+                <p class="description">@Model.Value("aboutCompanyRoleDescription")</p>
+            </div>
+        </div>
+        <div class="texts-column">
+            <div class="content-row">
+                <p class="section-header allert">@Model.Value("aboutCompanySectionHeader")</p>
+                <h1 class="section-title">@Model.Value("aboutCompanySectionTitle")</h1>
+                <p class="text">@Model.Value("aboutCompanyDescription")</p>
+            </div>
+            <div class="buttons-row">
+                <a href="@Model.Value("aboutCompanyButtonUrl")" class="btn learn-more-btn">@Model.Value("aboutCompanyButtonText")</a>
+                <div>
+                    <button class="btn play-btn"><i class="fa-solid fa-play"></i></button>
+                    <p class="text play-btn-text">Intro Video</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <div class="texts-btn-column">
+            <div class="texts-row">
+                <p class="section-header allert">@Model.Value("serviceFeaturesSectionHeader")</p>
+                <h1 class="section-title">@Model.Value("serviceFeaturesSectionTitle")</h1>
+            </div>
+            <div>
+                <a href="@Model.Value("serviceFeaturesButtonUrl")" class="btn learn-more-btn">@Model.Value("serviceFeaturesButtonText")</a>
+            </div>
+        </div>
+        <div class="cards-column">
+            @Html.GetBlockListHtml(Model.ServiceFeatures)
+        </div>
+    </div>
+</section>
+
+<section class="choose">
+    <div class="container">
+        <div class="cards-texts-column">
+            <div class="texts">
+                <p class="section-header allert">@Model.Value("chooseUsSectionHeader")</p>
+                <h1 class="section-title">@Model.Value("chooseUsSectionTitle")</h1>
+            </div>
+            <div class="content">
+                @Html.GetBlockListHtml(Model.ChooseUsServices)
+            </div>
+        </div>
+        <div class="image-column">
+            <div class="background-box"></div>
+            <div class="image">
+            @{
+                var chooseUsImage = Model.Value<MediaWithCrops>("ChooseUsImage");
+                if (chooseUsImage != null)
+                {
+                    <img src="@chooseUsImage.MediaUrl()" alt="image" />
+                }
+            }
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="services">
+    <img src="~/static/background-effects/background-lines-right.svg">
+    <div class="container">
+        <div class="texts-row">
+            <div class="texts">
+                <p class="section-header allert">@Model.Value("ourServicesSectionHeader")</p>
+                <h1 class="section-title">@Model.Value("ourServicesSectionTitle")</h1>
+            </div>
+        </div>
+        <div class="cards-row">
+        @if (services != null) 
+        {
+    	    @foreach (var item in services!)
+	        {
+                var url = item.Url();
+                var title = item.Name();
+                var preamble = item.Value("servicePreamble");
+                var category = item.Value("serviceCategory");
+                
+
+                @if (category != null && category.Equals(featureCategory))
+                {
+                    <div class="services-card">
+                        <div class="line"></div>
+                        <div class="content">
+                            <h4 class="card-title">@title</h4>
+                            <p class="card-text">@preamble</p>
+                        </div>
+                        <div class="card-btn">
+                            <a href="@url" class="btn arrow-btn"><i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                }
+	        }
+        }
+        </div>
+        <div class="button-row">
+            <a href="@Model.Value("ourServicesButtonUrl")" class="btn browse-btn">@Model.Value("ourServicesButtonText")</a>
+        </div>
+    </div>
+</section>
+
+<section class="project">
+    <div class="container">
+        <div class="texts-row">
+            <div class="texts">
+                <p class="section-header allert">@Model.Value("projectCaseStudiesSectionHeader")</p>
+                <h1 class="section-title">@Model.Value("projectCaseStudiesSectionTitle")</h1>
+            </div>
+        </div>
+        <div class="cards-row">
+        @if (services != null) 
+        {
+            @foreach (var item in services)
+            {
+                var url = item.Url();
+                var title = item.Name();
+                var image = item.Value<IPublishedContent>("serviceImage");
+                var category = item.Value("serviceCategory");
+        
+                @if (category != null && category.Equals(projectCategory))
+                {
+                    <div class="project-card">
+                        <div class="card-image">
+                            <img src="@image?.Url()" alt="image">
+                        </div>
+                        <div class="card-text">
+                            <h4 class="card-title">@title</h4>
+                            <div class="card-link">
+                                <a href="@url" class="link">Read More</a>
+                                <span class="icon"><i class="fa-solid fa-arrow-right"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+        </div>
+        <div class="button-row">
+            <a href="@Model.Value("projectCaseStudiesButtonUrl")" class="btn project-btn">@Model.Value("projectCaseStudiesButtonText")</a>
+        </div>
+    </div>
+</section>
+
+<section class="team-members">
+    <div class="container">
+        <div class="texts-btn-row">
+            <div>
+                <p class="section-header allert">@Model.Value("teamEmployeesSectionHeader")</p>
+                <h1 class="section-title">@Model.Value("teamEmployeesSectionTitle")</h1>
+            </div>
+            <div class="btn-column">
+                <a href="@Model.Value("teamEmployeesButtonUrl")" class="btn browse-btn">@Model.Value("teamEmployeesButtonText")</a>
+            </div>
+        </div>
+        <div class="employees-row">
+	    @foreach (var item in employees)
+	    {
+	        var url = item.Url();
+	        var name = item.Name();
+	        var role = item.Value("employeeRole");
+	        var image = item.Value<IPublishedContent>("employeeImage");
+	    
+            <div class="employee-card">
+                <a href="@url" class="employee-link">
+                    <div class="employee-image">
+                        <img src="@image?.Url()" alt="image">
+                    </div>
+                </a>
+                <div>
+                    <h4 class="name">@name</h4>
+                    <p class="role">@role</p>
+                </div>
+            </div>
+	    }
+        </div>
+        <div class="pagination-row d-none">
+            <ul class="pagination-list">
+                <li><a href="#" class="btn pagination-btn"></a></li>
+                <li><a href="#" class="btn pagination-btn"></a></li>
+                <li><a href="#" class="btn pagination-btn"></a></li>
+                <li><a href="#" class="btn pagination-btn"></a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="client-reviews">
+    <div class="container">
+        <div class="header-row">
+            <p class="section-header allert">@Model.Value("clientReviewsSectionHeader")</p>
+            <h1 class="section-title">@Model.Value("clientReviewsSectionTitle")</h1>
+        </div>
+        <div class="reviews-row">
+    	@foreach (var item in reviews)
+	    {
+	        var name = item.Value("reviewerName");
+	        var role = item.Value("reviewerRole");
+	        var content = item.Value("reviewContent");
+	        var image = item.Value<IPublishedContent>("reviewerImage");
+	        var rating = item.Value<int>("reviewRating");
+
+            <div class="review-card">
+                <div>
+                    <ul class="ratings">
+                    @for (var i = 0; i < rating; i++)
+                    {
+                        <li class="rating"><i class="fa-solid fa-star"></i></li>
+                    }
+                    </ul>
+                </div>
+                <div class="content-row">
+                    <p class="review-text">@content</p>
+                </div>
+                <div class="profile-row">
+                    <div class="image">
+                        <img src="@image?.Url()" alt="image">
+                    </div>
+                    <div class="profile">
+                        <h2 class="name">@name</h2>
+                        <p class="role allert">@role</p>
+                    </div>
+                </div>
+            </div>
+	    }
+        </div>
+        <div class="button-row">
+            <a href="@Model.Value("clientReviewsButtonUrl")" class="btn reviews-btn">@Model.Value("clientReviewsButtonText")</a>
+        </div>
+    </div>
+</section>
+
+@await Html.PartialAsync("_ArticleNews")
+@await Html.PartialAsync("_Subscribe")
+
+
+
+ 

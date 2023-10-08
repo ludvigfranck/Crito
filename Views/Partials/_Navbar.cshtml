@@ -1,0 +1,68 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Core.Routing
+@using Umbraco.Extensions
+
+@inject IPublishedValueFallback PublishedValueFallback
+@inject IPublishedUrlProvider PublishedUrlProvider
+
+@{ 
+    var site = Model.Root();
+    var selection = Model.Root().Children.Where(x => x.IsVisible(PublishedValueFallback)).ToArray(); 
+}
+
+<nav class="navbar">
+    <div class="container">
+        <div class="logotype">
+            <img src="~/static/logotypes/logotype.svg" alt="logotype">
+        </div>
+        <div class="center-column">
+            <div class="contact-links">
+                <div class="link">
+                    <span><i class="fa-solid fa-phone"></i></span>
+                    <a href="#">+46 (8) 121 470 50</a>
+                </div>
+                <div class="link">
+               <div class="border-left"></div>
+                    <span><i class="fa-solid fa-square-envelope"></i></span>
+                    <a href="#">info@crito.com</a>
+                </div>
+                <div class="link">
+               <div class="border-left"></div>
+                    <span><i class="fa-solid fa-location-dot"></i></span>
+                    <a href="#">Sveavägen 31, 111 34 STOCKHOLM</a>
+                </div>
+            </div>
+            <div class="page-links">
+                <div class="page link">
+                @if (selection?.Length > 0) 
+                {
+                    <ul>
+                        <li class="@(Model.Id == site.Id ? "active": null)"><a href="@site.Url()">@site.Name</a></li>
+                    @foreach (var item in selection)
+                    {
+                        <li class="@(item.IsAncestorOrSelf(Model) ? "active" : null)">
+                            <a href="@item.Url(PublishedUrlProvider)">@item.Name</a>
+                        </li>
+                    }
+                    </ul>
+                }
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="social-media">
+                <ul>
+                    <li><a href="#"><i class="fa-brands fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                    <li><a href="#"><i class="fa-brands fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+            <div class="login">
+                <button class="btn login-btn">Login</button>
+            </div>
+        </div>
+    </div>
+</nav>

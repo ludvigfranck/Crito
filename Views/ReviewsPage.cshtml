@@ -1,0 +1,140 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.ReviewsPage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	Layout = "_BreadcrumbPageLayout.cshtml";
+	
+	var reviews = Umbraco.Content(Guid.Parse("c4c93124-5381-449d-b23d-a2e190b0b549"))
+        .ChildrenOfType("reviewItem")
+        .Where(x => x.IsVisible())
+        .OrderBy(x => x.CreateDate);
+        
+	var services = Umbraco.Content(Guid.Parse("82221352-3c59-4fcd-b73d-ad1bfdc6a83d"))
+        .ChildrenOfType("serviceItemPage")
+        .Where(x => x.IsVisible())
+        .OrderByDescending(x => x.CreateDate);
+}
+
+<section class="reviews">
+    <div class="container">
+        <div class="header-row">
+            <div>
+                <p class="section-header allert">@Model.Value("allReviewsSectionHeader")</p>
+                <h1 class="section-title">@Model.Value("allReviewsSectionTitle")</h1>
+            </div>
+            <div class="reviews-button">
+                <a href="@Model.Value("allReviewsButtonUrl")" class="btn review-btn">@Model.Value("allReviewsButtonText")</a>
+            </div>
+        </div>
+        <div class="content-row">
+            <div class="reviews-column">
+            @if (reviews != null) 
+            {
+                @foreach (var item in reviews) 
+                {
+                    var name = item.Value("reviewerName");
+                    var role = item.Value("reviewerRole");
+                    var image = item.Value<IPublishedContent>("reviewerImage");
+                    var comment = item.Value("reviewContent");
+                    var rating = item.Value<int>("reviewRating");
+                
+                    <div class="review">
+                        <div class="review-rating-profile">
+                            <div class="reviewer-profile">
+                                <div class="reviewer-image">
+                                    <img src="@image?.Url()" alt="image">
+                                </div>
+                                <div class="reviewer-info">
+                                    <h4 class="reviewer-name">@name</h4>
+                                    <p class="allert reviewer-role">@role</p>
+                                </div>
+                            </div>
+                            <ul class="ratings">
+                            @for (var i = 0; i < rating; i++)
+                            {
+                                <li class="rating"><i class="fa-solid fa-star"></i></li>
+                            }
+                            </ul>
+                        </div>
+                        <div class="reviewer-content">
+                            <p class="section-header reviewer-comment">@comment</p>
+                        </div>
+                    </div>
+                }
+            }
+            </div>
+            <div class="add-review-column">
+                <h4 class="form-title">Add a Review</h4>
+                <form class="add-review-form" novalidate>
+                    <div class="form-row">
+                        <input class="input" placeholder="First name & Last name">
+                    </div>
+                    <div class="form-row">
+                        <input class="input" placeholder="E-mail address">
+                    </div>
+                    <div class="form-row">
+                        <textarea class="text-area" placeholder="Your'e Review"></textarea>
+                    </div>
+                    <div class="submit">
+                        <button class="btn submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="services-slider background-color">
+    <div class="container">
+        <div class="header-row">
+            <div>
+                <p class="section-header allert">@Model.Value("servicesSliderSectionHeader")</p>
+                <h1 class="section-title">@Model.Value("servicesSliderSectionTitle")</h1>
+            </div>
+            <div class="btn-column">
+                <a href="@Model.Value("servicesSliderButtonUrl")" class="btn browse-btn">@Model.Value("servicesSliderButtonText")</a>
+            </div>
+        </div>
+        <div class="items-container-row">
+            <div class="items-wrapper services-wrapper">
+                <div class="items-slider">
+                @if (services != null) 
+                {
+                    @foreach (var item in services) 
+                    {
+                        var url = item.Url();
+                        var date = item.CreateDate;
+                        var image = item.Value<IPublishedContent>("serviceImage");
+                        var category = item.Value("serviceCategory");
+                        var title = item.Name();
+                        var preamble = item.Value("servicePreamble");
+                        
+                        <div class="item-card">
+                            <a href="@url" class="card-link">
+                                <div class="card-image">
+                                    <img src="@image?.Url()" alt="service image">
+                                    <div class="box">
+                                        <h4 class="date">@date.ToString("dd")</h4>
+                                        <p class="month">@date.ToString("MMM")</p>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="card-content">
+                                <p class="category">@category</p>
+                                <h4 class="title">@title</h4>
+                                <p class="description">@preamble</p>
+                            </div>
+                        </div>
+                    }
+                }
+                </div>
+            </div>
+        </div>
+        <div class="pagination-row">
+            <ul class="button-list">
+                <li><button id="services-prev-btn" class="btn pagination-btn"><i class="fa-solid fa-chevron-left"></i></button></li>
+                <li><button id="services-next-btn" class="btn pagination-btn"><i class="fa-solid fa-chevron-right"></i></button></li>
+            </ul>
+        </div>
+    </div>
+</section>

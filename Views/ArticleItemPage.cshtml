@@ -1,0 +1,148 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.ArticleItemPage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.Services;
+@using Umbraco.Cms.Core.Models.PublishedContent;
+@inject IUserService UserService;
+
+@{
+	Layout = "_BreadcrumbPageLayout.cshtml";
+	var userService = UserService;
+	var image = Model.Value<IPublishedContent>("articleImage");
+	
+	var selection = Umbraco.Content(Guid.Parse("6e6ec7d8-f257-4954-bf5e-430ebefbe54d"))
+        .ChildrenOfType("articleItemPage")
+        .Where(x => x.IsVisible())
+        .OrderByDescending(x => x.CreateDate);
+}
+
+<section class="article-details">
+    <div class="container">
+        <div class="titles-texts">
+            <div class="titles">
+                <h1 class="title">@Model.Name</h1>
+            </div>
+            <div class="texts">
+                <p class="text">@Model.CreateDate.ToString("MM dd, yyyy")</p>
+                <div class="dot"></div>
+                <p class="text">@Model.Value("articleCategory")</p>
+                <div class="dot"></div>
+                <p class="text">@Model.CreatorName(UserService)</p>
+            </div>
+        </div>
+        <div class="article-content">
+            <div class="content-column">
+                <div class="image">
+                    <img src="@image.Url()" alt="article image">
+                </div>
+                <div class="article-text">
+                    <p class="text">@Model.Value("articleContent")</p>
+                </div>
+                <div class="tags">
+                    <ul class="tags-list">
+                        @foreach (var tag in @Model.Value<IEnumerable<string>>("articleTags")) 
+                        {
+                            <li><div class="tag">@tag</div></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="posts-column">
+                <form class="search-form" novalidate>
+                    <div class="form-box">
+                        <label class="icon"><i class="fa-solid fa-magnifying-glass"></i></label>
+                        <input class="input" placeholder="Type to search...">
+                    </div>
+                </form>
+                <div class="row-box">
+                    <h4 class="title">Recent Posts</h4>
+                    <div class="mb-4 text-box">
+                        <p class="text">How To Blow Through Capital At An Incredible Rate</p>
+                        <p class="date">Jan 14, 2020</p>
+                    </div>
+                    <div class="mb-4 text-box">
+                        <p class="text">Design Studios That Everyone Should Know About?</p>
+                        <p class="date">Jan 14, 2020</p>
+                    </div>
+                    <div class="mb-4 text-box">
+                        <p class="text">How did we get 1M+ visitors in 30 days without anything!</p>
+                        <p class="date">Jan 14, 2020</p>
+                    </div>
+                    <div>
+                        <p class="text">Figma On Figma: How We Built Our Website Design System</p>
+                        <p class="date">Jan 14, 2020</p>
+                    </div>
+                </div>
+                <div class="row-box">
+                    <h4 class="title">Categories</h4>
+                    <div>
+                        <p class="text mb-2">Technology <span class="mx-2">-</span><span class="post">20 posts</span></p>
+                        <p class="text mb-2">Freelancing <span class="mx-2">-</span><span class="post">07 posts</span></p>
+                        <p class="text mb-2">Writing <span class="mx-2">-</span><span class="post">16 posts</span></p>
+                        <p class="text mb-2">Marketing <span class="mx-2">-</span><span class="post">11 posts</span></p>
+                        <p class="text mb-2">Business <span class="mx-2">-</span><span class="post">35 posts</span></p>
+                        <p class="text">Education <span class="mx-2">-</span><span class="post">14 posts</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="articles background-color">
+    <div class="container">
+        <div class="header-row">
+            <div>
+                <p class="section-header allert">@Model.Value("articleNewsSectionHeader")</p>
+                <h1 class="section-title">@Model.Value("articleNewsSectionTitle")</h1>
+            </div>
+            <div class="btn-column">
+                <a href="@Model.Value("articleNewsButtonUrl")" class="btn browse-btn">@Model.Value("articleNewsButtonText")</a>
+            </div>
+        </div>
+        <div class="items-container-row">
+            <div class="items-wrapper articles-wrapper">
+                <div class="items-slider">
+                @if (selection != null) 
+                { 
+                    @foreach (var item in selection!)
+                    {
+                        var url = item.Url();
+                        var date = item.CreateDate;
+                        var _image = item.Value<IPublishedContent>("articleImage");
+                        var catgeory = item.Value("articleCategory");
+                        var title = item.Name();
+                        var preamble = item.Value("articlePreamble");
+
+                        <div class="item-card">
+                            <a href="@url" class="card-link">
+                                <div class="card-image">
+                                    <img src="@_image?.Url()" alt="news image">
+                                    <div class="box">
+                                        <h4 class="date">@date.ToString("dd")</h4>
+                                        <p class="month">@date.ToString("MMM")</p>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="card-content">
+                                <p class="category">@catgeory</p>
+                                <h4 class="title">@title</h4>
+                                <p class="description">@preamble</p>
+                            </div>
+                        </div>
+                    }
+                }
+                </div>
+            </div>
+        </div>
+        <div class="pagination-row">
+            <ul class="button-list">
+                @if (selection.Count() > 3) 
+                {
+                    <li><button id="articles-prev-btn" class="btn pagination-btn"><i class="fa-solid fa-chevron-left"></i></button></li>
+                    <li><button id="articles-next-btn" class="btn pagination-btn"><i class="fa-solid fa-chevron-right"></i></button></li>
+                }
+            </ul>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,52 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.EmployeesPage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	Layout = "_BreadcrumbPageLayout.cshtml";
+	
+	var employees = Umbraco.Content(Guid.Parse("8ba9af53-2c6e-4ccf-89d6-3a2e35aed155"))
+        .ChildrenOfType("employeeItemPage")
+        .Where(x => x.IsVisible())
+        .OrderByDescending(x => x.CreateDate);
+
+}
+
+<section class="our-team">
+    <div class="container">
+        <div class="header-row">
+            <p class="section-header allert">Team</p>
+            <h1 class="section-title">Meet our Team & Employees</h1>
+        </div>
+        <div class="employees">
+        @if (employees != null) 
+        {
+        	@foreach (var item in employees)
+	        {
+	        
+    	        var url = item.Url();
+	            var name = item.Name();
+	            var role = item.Value("employeeRole");
+	            var rolePreamble = item.Value("employeeRolePreamble");
+	            var image = item.Value<IPublishedContent>("employeeImage");
+	            
+                <div class="employee">
+                    <a href="@url">
+                        <div class="employee-image">
+                            <img src="@image?.Url()" alt="image">
+                        </div>
+                    </a>
+                    <div class="employee-info">
+                        <p class="name">@name</p>
+                        <div class="descriptions">
+                            <h4 class="role">@role</h4>
+                            <p class="role-preamble">@rolePreamble</p>
+                        </div>
+                    </div>
+                </div>
+	        }   
+        }
+        </div>
+    </div>
+</section>
+
+@await Html.PartialAsync("_Subscribe")

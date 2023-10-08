@@ -1,0 +1,84 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.ServiceItemPage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.Services;
+@using Umbraco.Cms.Core.Models.PublishedContent;
+@inject IUserService UserService;
+@{
+	Layout = "_BreadcrumbPageLayout.cshtml";
+	var userService = UserService;
+	var image = Model.Value<IPublishedContent>("serviceImage");
+	var subImage = Model.Value<IPublishedContent>("serviceSubImage");
+}
+
+<section class="service-details">
+    <div class="container">
+         <div class="service-title-row">
+            <h1 class="section-title allert">@Model.Name</h1>
+            <div class="title-border"></div>
+            <div class="title-text-btn">
+                <div class="categories">
+                    <p class="section-header">Services</p>
+                    <div class="line"></div>
+                    <p class="section-header">@Model.Value("serviceCategory")</p>
+                    <div class="line"></div>
+                    <p class="section-header">@Model.Value("serviceTitle")</p>
+                </div>
+                <a href="/services" class="btn browse-btn">Browse Services</a>
+            </div>
+         </div>
+         <div class="content-row">
+            <div class="left-content-column">
+                <div class="image-row">
+                    <img src="@image?.Url()" alt="image">
+                </div>
+                <div class="texts-row">
+                    <p class="text-bold">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Excepturi unde voluptate ullam optio explicabo esse hic velit totam maxime nobis sint voluptatum, corporis delectus repellat ea, dolorem ab dolor vel rerum consectetur debitis reprehenderit quibusdam!</p>
+                    <p class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque eos doloremque facilis eius odit? Deleniti dignissimos nesciunt impedit optio ratione, necessitatibus corporis accusantium expedita consequatur aspernatur. Dolor veniam, blanditiis incidunt quae rerum repellat distinctio ratione maiores molestias optio recusandae ullam, doloribus saepe? Provident modi in et sed illo corrupti quibusdam.</p>
+                    <p class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque eos doloremque facilis eius odit? Deleniti dignissimos nesciunt impedit optio ratione, necessitatibus corporis accusantium expedita consequatur aspernatur.</p>
+                </div>
+            </div>
+            <div class="right-content-column">
+                <div class="preamble-row">
+                    <h4 class="preamble">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi sed perspiciatis unde sit rerum aliquid tempora quos nam, vero, ullam blanditiis eaque molestiae ipsum nostrum porro sapiente optio possimus repellat?</h4>
+                </div>
+                <div class="image-row">
+                    <p class="text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Placeat fuga illo eligendi porro recusandae cumque unde, officiis assumenda veniam ea quos pariatur tempore aliquid, expedita, laborum minus voluptatem. Ex porro labore dolores deleniti molestiae nostrum quidem quas quasi architecto voluptate.</p>
+                    <img src="@subImage?.Url()" alt="image">
+                </div>
+                <div class="texts-row">
+                    <p class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam nesciunt voluptas aut amet officiis quo natus veritatis omnis nostrum nihil, illo voluptates quis quasi aliquam corrupti culpa explicabo perspiciatis tenetur quia reprehenderit iusto, possimus exercitationem velit! Dignissimos, numquam dolor! Enim illo nostrum quasi sed? Eius inventore sunt labore a ipsa!</p>
+                    <div class="qoute-text">
+                        <span class="qoute">"</span>
+                        <p class="text-bold">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet vero adipisci placeat, ea, facere voluptatem voluptate ratione soluta nemo.</p>
+                    </div>
+                    <p class="text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cumque quasi velit ea quaerat, aspernatur similique incidunt, labore, quas consequatur dolorum et perspiciatis dolore minima voluptate officia! Dolores dicta, sint illum, deserunt animi perferendis saepe quidem, at cupiditate assumenda consequuntur blanditiis aut quibusdam. Dicta delectus vel corrupti impedit dolorum! Quibusdam nisi consequatur dolor blanditiis deserunt ex hic eaque pariatur eos voluptatum!</p>
+                </div>
+            </div>
+            <div class="content-border"></div>
+         </div>
+         <div class="publisher-row">
+            <div class="texts-column">
+                <p class="text">@Model.CreateDate.ToString("MM dd, yyyy")</p>
+                <div class="dot"></div>
+                <p class="text">@Model.Value("serviceCategory")</p>
+                <div class="dot"></div>
+                <p class="text">@Model.CreatorName(UserService)</p>
+            </div>
+            <div class="contact-column">
+                <div class="contact-information">
+                    <p class="text">+46 000 000</p>
+                    <p class="text">crito.contact@crito.com</p>
+                </div>
+                <ul class="social-medias">
+                    <li><a class="social-media" href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                    <li><a class="social-media" href="#"><i class="fa-brands fa-facebook"></i></a></li>
+                    <li><a class="social-media" href="#"><i class="fa-brands fa-linkedin-in"></i></a></li>
+                    <li><a class="social-media" href="#"><i class="fa-brands fa-twitter"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+@await Html.PartialAsync("_Subscribe")

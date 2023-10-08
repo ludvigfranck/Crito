@@ -1,0 +1,56 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.EmployeeItemPage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.Models.PublishedContent;
+@{
+	Layout = "_BreadcrumbPageLayout.cshtml";
+	var image = Model.Value<IPublishedContent>("employeeImage");
+}
+
+<section class="employee-details">
+    <div class="container">
+        <div class="image-column">
+            <div class="image">
+                <img class="" src="@image?.Url()" alt="image">
+            </div>
+        </div>
+        <div class="information-column">
+            <div class="contact-row">
+                <h2 class="name">@Model.Name</h2>
+                <div class="text-row">
+                    <h4 class="title">Role:</h4>
+                    <p class="text">@Model.Value("employeeRole")</p>
+                </div>
+                <div class="text-row">
+                    <h4 class="title">Phonenumber:</h4>
+                    <p class="text">@Model.Value("employeePhonenumber")</p>
+                </div>
+                <div class="text-row">
+                    <h4 class="title">E-mail:</h4>
+                    <p class="text">@Model.Value("employeeEmail")</p>
+                </div>
+            </div>
+            <div class="info-text-row">
+                <p class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos hic amet soluta veritatis nesciunt distinctio laborum et sunt nam dolore adipisci nihil odit voluptatum quaerat aperiam quibusdam quod assumenda consectetur beatae, esse, blanditiis modi. Reprehenderit, dolores tenetur repellendus voluptatem quasi amet.</p>
+            </div>
+            <div class="chat-row">
+                <div class="button-row">
+                    <button class="btn chat-btn">
+                        Chat
+                        <span class="icon"><i class="fa-solid fa-headset"></i></span>
+                    </button>
+                </div>
+                <div class="social-medias-row">
+                    <ul class="social-medias">
+                        <li class="social-media"><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                        <li class="social-media"><a href="#"><i class="fa-brands fa-facebook"></i></a></li>
+                        <li class="social-media"><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+                        <li class="social-media"><a href="#"><i class="fa-brands fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@await Html.PartialAsync("_Subscribe")
