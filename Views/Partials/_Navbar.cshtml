@@ -42,9 +42,12 @@
                         <li class="@(Model.Id == site.Id ? "active": null)"><a href="@site.Url()">@site.Name</a></li>
                     @foreach (var item in selection)
                     {
+                        @if (item.Name != "Subscribed") 
+                        {
                         <li class="@(item.IsAncestorOrSelf(Model) ? "active" : null)">
                             <a href="@item.Url(PublishedUrlProvider)">@item.Name</a>
                         </li>
+                        }
                     }
                     </ul>
                 }

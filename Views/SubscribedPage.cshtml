@@ -1,0 +1,13 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.SubscribedPage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	Layout = "_BreadcrumbPageLayout.cshtml";
+}
+
+<section class="subscribed">
+    <div class="container">
+        <h1 class="section-title">@Model.Value("subscribedTitle")</h1>
+        <p class="section-header">@Model.Value("subscribedMessage")</p>
+    </div>
+</section>

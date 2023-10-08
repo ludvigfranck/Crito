@@ -13,7 +13,9 @@
         </div>
         @using (Html.BeginUmbracoForm("Subscribe", "Home", FormMethod.Post))
         {
-            <div class="allert" asp-validation-summary="All"></div>
+            <div>
+                <div class="allert" asp-validation-summary="All"></div>
+            </div>
             <div class="inputs">
                 <input class="input" asp-for="@newsLetterForm.Email" placeholder="username@domain.com*">
                 <button type="submit" class="btn subscribe-btn">Subscribe</button>

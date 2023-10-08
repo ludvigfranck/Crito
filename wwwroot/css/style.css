@@ -1110,7 +1110,15 @@ a:hover {
   bottom: 55px;
 }
 .subscribe form {
-  display: flex;
+  display: grid;
+  gap: 20px;
+}
+.subscribe form ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 18px;
+  padding: 0 0 0 30px;
 }
 .subscribe form .inputs {
   position: relative;
@@ -2157,4 +2165,14 @@ a:hover {
   background-color: white;
   color: #191919;
   border: 1px solid #191919;
+}
+
+.subscribed {
+  margin: 120px;
+}
+.subscribed .container {
+  padding: 100px 0px;
+  text-align: center;
+  background-color: #F9D783;
+  border-radius: 30px;
 }
